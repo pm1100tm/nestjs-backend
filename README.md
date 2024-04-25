@@ -35,3 +35,10 @@ npm run test:e2e
 # test coverage
 npm run test:cov
 ```
+
+---
+
+### TypeORM
+
+- [TypeORM](https://typeorm.io/)
+- [TypeORM API Docs](https://orkhan.gitbook.io/typeorm/docs/repository-api)
