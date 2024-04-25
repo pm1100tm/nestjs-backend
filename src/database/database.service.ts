@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
@@ -16,7 +18,8 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('DB_NAME'),
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
       synchronize: this.configService.get<boolean>('DB_SYNC'),
-      logging: false,
+      logging: true,
+      namingStrategy: new SnakeNamingStrategy(),
     };
   }
 }
