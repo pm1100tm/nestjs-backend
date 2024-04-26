@@ -1,9 +1,10 @@
 import {
   Injectable,
-  BadRequestException,
-  ConflictException,
   Inject,
   forwardRef,
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { CustomerService } from './customer.service';
@@ -16,8 +17,9 @@ import { User } from 'user/entities/user.entity';
 
 import { CreateUserInDto } from 'user/dtos/req/create-user-in.dto';
 import { CreateUserOutDto } from 'user/dtos/res/create-user-out.dto';
-import { RoleEnum, SocialProvider } from 'user/user.enums';
 import { CreateCustomerInDto } from 'user/dtos/req/create-customer-in.dto';
+import { UserOutDto } from 'user/dtos/res/user.out';
+import { RoleEnum, SocialProvider } from 'user/user.enums';
 
 @Injectable()
 export class UserService {
@@ -77,5 +79,29 @@ export class UserService {
     createUserOutDto.createdAt = user.createdAt;
 
     return createUserOutDto;
+  }
+
+  async findOne({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  } = {}): Promise<UserOutDto> {
+    if (!id && !email)
+      throw new BadRequestException('Id or Email should be set');
+
+    const user = await this.userRepository.selectUnique({ id, email });
+    if (!user) throw new NotFoundException();
+
+    const userOutDto = new UserOutDto();
+    userOutDto.id = user.id;
+    userOutDto.role = user.role;
+    userOutDto.socialProvider = user.socialProvider;
+    userOutDto.isDeleted = user.isDelete;
+    userOutDto.createdAt = user.createdAt;
+    userOutDto.updatedAt = user.updatedAt;
+
+    return userOutDto;
   }
 }
