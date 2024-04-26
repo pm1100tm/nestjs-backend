@@ -1,14 +1,57 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+
+import { User } from 'user/entities/user.entity';
 
 @Injectable()
 export class UserRepository {
-  constructor() {}
+  constructor(@InjectRepository(User) private repository: Repository<User>) {}
 
-  async insert() {}
+  async insert(user: User): Promise<User> {
+    return await this.repository.save(user);
+  }
 
-  async selectOne() {}
+  async selectUnique({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  }): Promise<User | null> {
+    const result = await this.repository.findOne({
+      where: {
+        id,
+        email,
+      },
+    });
 
-  async selectCount() {}
+    return result;
+  }
 
-  async updateRefreshToken() {}
+  async selectCount({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  }): Promise<number> {
+    const count = await this.repository.count({
+      where: {
+        id,
+        email,
+      },
+    });
+
+    return count;
+  }
+
+  async updateRefreshToken(
+    id: number,
+    { refreshToken }: { refreshToken: string },
+  ): Promise<UpdateResult> {
+    return await this.repository.update(id, {
+      refreshToken,
+    });
+  }
 }
