@@ -44,11 +44,11 @@ export class RefreshTokenGuard implements CanActivate {
 
   private extractTokenFromHeader(request: Req): { refreshToken: string } {
     const cookies = request.headers?.cookie || '';
-    if (!cookies) {
-      throw new UnauthorizedException('Not exists cookie string');
+    const encodedJson = cookies.split('auth-cookie=')[1];
+    if (!encodedJson.length) {
+      throw new UnauthorizedException("There's no user auth to refresh");
     }
 
-    const encodedJson = cookies.split('auth-cookie=')[1];
     const decodedJson = decodeURIComponent(encodedJson);
     const token: Tokens = JSON.parse(decodedJson);
 
