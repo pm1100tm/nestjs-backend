@@ -9,4 +9,7 @@ export type Tokens = {
   refreshToken: string;
 };
 
-export type CurrentUser = JwtPayload & { iat: number; exp: number };
+export type CurrentUser = JwtPayloadWithRefreshToken & {
+  iat: number;
+  exp: number;
+};

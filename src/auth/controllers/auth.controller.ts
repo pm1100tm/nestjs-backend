@@ -1,18 +1,25 @@
 import {
-  Body,
   Controller,
-  Get,
+  Body,
   HttpCode,
   HttpStatus,
-  Post,
   Res,
+  Get,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 
+import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
+
 import { AuthService } from 'auth/services/auth.service';
 
-import { SignInInDto } from 'auth/dtos/req/signin-in.dto';
-import { Tokens } from 'auth/auth.types';
+import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
+import { RefreshTokenGuard } from 'auth/guards/refreshToken.gurad';
+
+import { SignInInDto } from 'auth/dtos/signin-in.dto';
+import { UserOutDto } from 'user/dtos/res/user.out';
+import { CurrentUser, Tokens } from 'auth/auth.types';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +32,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<Tokens> {
     const token = await this.authService.signin(signInInDto);
-    const tokenString = JSON.stringify(token);
+    const tokenString: string = JSON.stringify(token);
 
     res.setHeader(
       'Authorization',
@@ -39,13 +46,29 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
   @Post('/signout')
-  async signout() {}
+  async signout(
+    @GetCurrentUser() currentUser: CurrentUser,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    res.cookie('auth-cookie', '', {
+      httpOnly: true,
+    });
+
+    return this.authService.signout({ userId: currentUser.userId });
+  }
 
   @Post('/refresh')
-  refresh() {}
+  @UseGuards(RefreshTokenGuard)
+  refresh(@GetCurrentUser() currentUser: CurrentUser): Promise<Tokens> {
+    return this.authService.refresh(currentUser);
+  }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
   @Get('/current')
-  current() {}
+  current(@GetCurrentUser() currentUser: CurrentUser): Promise<UserOutDto> {
+    return this.authService.current({ id: currentUser.userId });
+  }
 }
