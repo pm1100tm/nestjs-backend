@@ -2,6 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from 'auth/auth.module';
+import { CommonModule } from 'common/common.module';
 
 import { UserController } from './controllers/user.controller';
 import { CustomerController } from './controllers/customer.controller';
@@ -17,6 +18,7 @@ import { Customer } from './entities/customer.entity';
   imports: [
     forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User, Customer]),
+    CommonModule,
   ],
   controllers: [UserController, CustomerController],
   providers: [UserService, CustomerService, UserRepository, CustomerRepository],
