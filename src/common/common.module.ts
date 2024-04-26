@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { EncryptUtil } from './encrypt.util';
 
-@Module({})
+@Module({
+  providers: [EncryptUtil],
+  exports: [EncryptUtil],
+})
 export class CommonModule {}
