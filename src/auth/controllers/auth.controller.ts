@@ -30,7 +30,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<Tokens> {
     const token = await this.authService.signin(signInInDto);
-    const tokenString = JSON.stringify(token);
+    const tokenString: string = JSON.stringify(token);
 
     res.setHeader(
       'Authorization',
@@ -44,8 +44,18 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
   @Post('/signout')
-  async signout() {}
+  async signout(
+    @GetCurrentUser() currentUser: CurrentUser,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    res.cookie('auth-cookie', '', {
+      httpOnly: true,
+    });
+
+    return this.authService.signout({ userId: currentUser.userId });
+  }
 
   @Post('/refresh')
   refresh() {}

@@ -94,6 +94,16 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  async signout({ userId }: { userId: number }): Promise<void> {
+    const affected = await this.userRepository.updateRefreshToken(userId, {
+      refreshToken: '',
+    });
+
+    if (!affected) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   async current({ id }: { id: number }): Promise<UserOutDto> {
     return this.userService.findOne({ id });
   }
