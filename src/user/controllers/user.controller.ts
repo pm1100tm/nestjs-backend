@@ -7,7 +7,10 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
+
+import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
 
 import { UserService } from 'user/services/user.service';
 
@@ -25,6 +28,7 @@ export class UserController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number): Promise<UserOutDto> {
     return this.userService.findOne({ id });

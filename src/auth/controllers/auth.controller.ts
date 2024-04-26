@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
+import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
+
 import { AuthService } from 'auth/services/auth.service';
 
-import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
 import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
 import { RefreshTokenGuard } from 'auth/guards/refreshToken.gurad';
 
