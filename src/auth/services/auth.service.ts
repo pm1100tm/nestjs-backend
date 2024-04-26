@@ -13,7 +13,7 @@ import { UserService } from 'user/services/user.service';
 import { EncryptUtil } from 'common/encrypt.util';
 import { UserRepository } from 'user/repositories/user.repository';
 
-import { SignInInDto } from 'auth/dtos/req/signin-in.dto';
+import { SignInInDto } from 'auth/dtos/signin-in.dto';
 import { UserOutDto } from 'user/dtos/res/user.out';
 import { CurrentUser, JwtPayload, Tokens } from 'auth/auth.types';
 import { SocialProvider } from 'user/user.enums';
