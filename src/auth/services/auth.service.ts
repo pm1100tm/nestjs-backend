@@ -9,11 +9,12 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+import { UserService } from 'user/services/user.service';
+import { EncryptUtil } from 'common/encrypt.util';
+import { UserRepository } from 'user/repositories/user.repository';
+
 import { SignInInDto } from 'auth/dtos/req/signin-in.dto';
 import { JwtPayload, Tokens } from 'auth/auth.types';
-
-import { UserService } from 'user/services/user.service';
-import { UserRepository } from 'user/repositories/user.repository';
 import { SocialProvider } from 'user/user.enums';
 
 @Injectable()
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    private readonly encryptUtil: EncryptUtil,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -64,10 +66,9 @@ export class AuthService {
         throw new BadRequestException('Email not matched');
     } else {
       if (!password) throw new BadRequestException('Password not set');
-      // TODO: compare password
-      // if (!(await this.encryptUtil.compare(password, user.password))) {
-      //   throw new BadRequestException('Password invalid');
-      // }
+      if (!(await this.encryptUtil.compare(password, user.password))) {
+        throw new BadRequestException('Password invalid');
+      }
     }
 
     const tokenPayload = { userId: user.id };

@@ -8,6 +8,8 @@ import {
 
 import { CustomerService } from './customer.service';
 import { AuthService } from 'auth/services/auth.service';
+import { EncryptUtil } from 'common/encrypt.util';
+
 import { UserRepository } from 'user/repositories/user.repository';
 
 import { User } from 'user/entities/user.entity';
@@ -24,6 +26,7 @@ export class UserService {
     private readonly authService: AuthService,
     private readonly customerService: CustomerService,
     private readonly userRepository: UserRepository,
+    private readonly encryptUtil: EncryptUtil,
   ) {}
 
   async create(createUserInDto: CreateUserInDto): Promise<CreateUserOutDto> {
@@ -45,9 +48,9 @@ export class UserService {
     userEntity.role = role;
     userEntity.socialProvider = socialProvider;
 
-    // if (SocialProvider.EMAIL === socialProvider) {
-    //   userEntity.password = await this.encryptUtil.encrypt(password);
-    // }
+    if (SocialProvider.EMAIL === socialProvider) {
+      userEntity.password = await this.encryptUtil.encrypt(password);
+    }
 
     const user = await this.userRepository.insert(userEntity);
 
