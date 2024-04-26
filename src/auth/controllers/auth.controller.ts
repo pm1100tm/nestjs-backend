@@ -14,6 +14,7 @@ import { AuthService } from 'auth/services/auth.service';
 
 import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
 import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
+import { RefreshTokenGuard } from 'auth/guards/refreshToken.gurad';
 
 import { SignInInDto } from 'auth/dtos/req/signin-in.dto';
 import { UserOutDto } from 'user/dtos/res/user.out';
@@ -58,7 +59,10 @@ export class AuthController {
   }
 
   @Post('/refresh')
-  refresh() {}
+  @UseGuards(RefreshTokenGuard)
+  refresh(@GetCurrentUser() currentUser: CurrentUser): Promise<Tokens> {
+    return this.authService.refresh(currentUser);
+  }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)

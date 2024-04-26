@@ -15,7 +15,7 @@ import { UserRepository } from 'user/repositories/user.repository';
 
 import { SignInInDto } from 'auth/dtos/req/signin-in.dto';
 import { UserOutDto } from 'user/dtos/res/user.out';
-import { JwtPayload, Tokens } from 'auth/auth.types';
+import { CurrentUser, JwtPayload, Tokens } from 'auth/auth.types';
 import { SocialProvider } from 'user/user.enums';
 
 @Injectable()
@@ -102,6 +102,20 @@ export class AuthService {
     if (!affected) {
       throw new InternalServerErrorException();
     }
+  }
+
+  async refresh(currentUser: CurrentUser): Promise<Tokens> {
+    const { userId, refreshToken } = currentUser;
+    const user = await this.userRepository.selectUnique({ id: userId });
+
+    if (!user) throw new NotFoundException();
+    if (user.refreshToken !== refreshToken) throw new BadRequestException('');
+
+    const tokenPayload = { userId };
+
+    const { accessToken } = this.issueAccessToken(tokenPayload);
+
+    return { accessToken, refreshToken };
   }
 
   async current({ id }: { id: number }): Promise<UserOutDto> {
