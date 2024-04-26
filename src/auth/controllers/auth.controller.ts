@@ -1,18 +1,23 @@
 import {
-  Body,
   Controller,
-  Get,
+  Body,
   HttpCode,
   HttpStatus,
-  Post,
   Res,
+  Get,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { AuthService } from 'auth/services/auth.service';
 
+import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
+import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
+
 import { SignInInDto } from 'auth/dtos/req/signin-in.dto';
-import { Tokens } from 'auth/auth.types';
+import { UserOutDto } from 'user/dtos/res/user.out';
+import { CurrentUser, Tokens } from 'auth/auth.types';
 
 @Controller('auth')
 export class AuthController {
@@ -46,6 +51,9 @@ export class AuthController {
   refresh() {}
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
   @Get('/current')
-  current() {}
+  current(@GetCurrentUser() currentUser: CurrentUser): Promise<UserOutDto> {
+    return this.authService.current({ id: currentUser.userId });
+  }
 }
