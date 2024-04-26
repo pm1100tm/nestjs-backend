@@ -1,6 +1,14 @@
-import { Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 
-import { UserService } from '../services/user.service';
+import { UserService } from 'user/services/user.service';
+import { CreateUserInDto } from 'user/dtos/req/create-user-in.dto';
 
 @Controller('users')
 export class UserController {
@@ -8,7 +16,9 @@ export class UserController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  create() {}
+  create(@Body() createUserInDto: CreateUserInDto) {
+    return this.userService.create(createUserInDto);
+  }
 
   @Get(':id')
   findOne() {}
