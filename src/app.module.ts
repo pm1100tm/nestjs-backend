@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
+
+import { LoggingInterceptor } from 'interceptors/logging.interceptor';
 
 import { DatabaseModule } from './database/database.module';
 import { DatabaseService } from './database/database.service';
@@ -40,6 +43,12 @@ import { AppService } from './app.service';
     CommonModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   UseGuards,
   ForbiddenException,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
@@ -20,7 +21,9 @@ import { CreateUserInDto } from 'user/dtos/req/create-user-in.dto';
 import { UserOutDto } from 'user/dtos/res/user.out';
 
 import { CurrentUser } from 'auth/auth.types';
+import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
+@UseInterceptors(TransformInterceptor)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
