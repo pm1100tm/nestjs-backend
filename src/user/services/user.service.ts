@@ -7,6 +7,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { Transactional } from 'typeorm-transactional';
+
 import { CustomerService } from './customer.service';
 import { AuthService } from 'auth/services/auth.service';
 import { EncryptUtil } from 'common/encrypt.util';
@@ -31,6 +33,7 @@ export class UserService {
     private readonly encryptUtil: EncryptUtil,
   ) {}
 
+  @Transactional()
   async create(createUserInDto: CreateUserInDto): Promise<CreateUserOutDto> {
     const createUserOutDto = new CreateUserOutDto();
 
