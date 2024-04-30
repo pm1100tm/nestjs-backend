@@ -7,6 +7,7 @@ import {
   Get,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -20,6 +21,7 @@ import { RefreshTokenGuard } from 'auth/guards/refreshToken.gurad';
 import { SignInInDto } from 'auth/dtos/signin-in.dto';
 import { UserOutDto } from 'user/dtos/res/user.out';
 import { CurrentUser, Tokens } from 'auth/auth.types';
+import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -65,6 +67,7 @@ export class AuthController {
     return this.authService.refresh(currentUser);
   }
 
+  @UseInterceptors(TransformInterceptor)
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
   @Get('/current')
