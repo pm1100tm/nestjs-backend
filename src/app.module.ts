@@ -1,15 +1,18 @@
 import { Module } from '@nestjs/common';
-
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
+
 import { DatabaseModule } from './database/database.module';
+import { DatabaseService } from './database/database.service';
+import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseService } from './database/database.service';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -24,6 +27,13 @@ import { CommonModule } from './common/common.module';
       imports: [ConfigModule],
       useClass: DatabaseService,
       inject: [ConfigService],
+      async dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+
+        return addTransactionalDataSource(new DataSource(options));
+      },
     }),
     UserModule,
     AuthModule,

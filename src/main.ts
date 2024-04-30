@@ -4,7 +4,14 @@ import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from './app.module';
 
+import {
+  initializeTransactionalContext,
+  StorageDriver,
+} from 'typeorm-transactional';
+
 async function bootstrap() {
+  initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
+
   const app = await NestFactory.create(AppModule, { abortOnError: false });
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
