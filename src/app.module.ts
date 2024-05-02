@@ -28,13 +28,12 @@ import { AppService } from './app.service';
     DatabaseModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useClass: DatabaseService,
       inject: [ConfigService],
-      async dataSourceFactory(options) {
+      useClass: DatabaseService,
+      dataSourceFactory: async (options) => {
         if (!options) {
           throw new Error('Invalid options passed');
         }
-
         return addTransactionalDataSource(new DataSource(options));
       },
     }),
