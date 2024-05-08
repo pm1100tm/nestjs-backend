@@ -1,15 +1,12 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { addTransactionalDataSource } from 'typeorm-transactional';
 
 import { LoggingInterceptor } from 'interceptors/logging.interceptor';
 
-import { DatabaseModule } from './database/database.module';
-import { DatabaseService } from './database/database.service';
+import { ormConfigAsync } from 'configs/database.config';
+
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
@@ -25,18 +22,7 @@ import { AppService } from './app.service';
       ignoreEnvFile: false,
       envFilePath: `./src/configs/.env.${process.env.NODE_ENV}`,
     }),
-    DatabaseModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useClass: DatabaseService,
-      dataSourceFactory: async (options) => {
-        if (!options) {
-          throw new Error('Invalid options passed');
-        }
-        return addTransactionalDataSource(new DataSource(options));
-      },
-    }),
+    TypeOrmModule.forRootAsync(ormConfigAsync),
     UserModule,
     AuthModule,
     CommonModule,
