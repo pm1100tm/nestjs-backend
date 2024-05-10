@@ -70,6 +70,11 @@ JWT_EXPIRED_IN_FOR_REFRESH=3600 # It should be set more bigger value
 
 ---
 
+### NestJS
+
+- [NestJS Docs](https://docs.nestjs.com/)
+- [wanago](https://wanago.io/)
+
 ### TypeORM
 
 - [TypeORM](https://typeorm.io/)
