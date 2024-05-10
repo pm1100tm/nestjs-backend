@@ -152,7 +152,7 @@ RUN npm cache clean --force && rm -rf node_modules && npm install
 ```
 
 bycrypt가 아닌 bycryptjs를 설치하는 것도 하나의 방법이지만, bycryptjs는 오랫동안 maintain 되지 않았고,
-bycrypt를 사용하는 것을 권장하므로, bycryptjs를 사용하는 방버은 채택하지 않았다.
+bycrypt를 사용하는 것을 권장하므로, bycryptjs를 사용하는 방법은 채택하지 않았다.
 
 Ref: [Error while building a docker image #824](https://github.com/kelektiv/node.bcrypt.js/issues/824)
 
