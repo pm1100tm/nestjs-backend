@@ -17,8 +17,8 @@ import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
 
 import { UserService } from 'user/services/user.service';
 
-import { CreateUserInDto } from 'user/dtos/req/create-user-in.dto';
-import { UserOutDto } from 'user/dtos/res/user.out';
+import { CreateUserInDto } from 'user/dto/req/create-user-in.dto';
+import { UserOutDto } from 'user/dto/res/user.out';
 
 import { CurrentUser } from 'auth/auth.types';
 import { TransformInterceptor } from 'interceptors/transform.interceptor';

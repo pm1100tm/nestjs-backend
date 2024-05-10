@@ -19,7 +19,7 @@ import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
 import { RefreshTokenGuard } from 'auth/guards/refreshToken.gurad';
 
 import { SignInInDto } from 'auth/dtos/signin-in.dto';
-import { UserOutDto } from 'user/dtos/res/user.out';
+import { UserOutDto } from 'user/dto/res/user.out';
 import { CurrentUser, Tokens } from 'auth/auth.types';
 import { TransformInterceptor } from 'interceptors/transform.interceptor';
 

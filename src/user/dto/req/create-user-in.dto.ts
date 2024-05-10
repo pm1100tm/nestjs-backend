@@ -6,7 +6,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { RoleEnum, SocialProvider } from 'user/user.enums';
+import { RoleEnum, SignInProvider } from 'user/user.enums';
 
 export class CreateUserInDto {
   @IsNotEmpty({ message: 'email should be set' })
@@ -15,8 +15,8 @@ export class CreateUserInDto {
   email: string;
 
   @IsNotEmpty()
-  @IsEnum(SocialProvider)
-  socialProvider: SocialProvider;
+  @IsEnum(SignInProvider)
+  signInProvider: SignInProvider;
 
   @IsEnum(RoleEnum)
   role: RoleEnum;

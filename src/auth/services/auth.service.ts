@@ -14,9 +14,9 @@ import { EncryptUtil } from 'common/encrypt.util';
 import { UserRepository } from 'user/repositories/user.repository';
 
 import { SignInInDto } from 'auth/dtos/signin-in.dto';
-import { UserOutDto } from 'user/dtos/res/user.out';
+import { UserOutDto } from 'user/dto/res/user.out';
 import { CurrentUser, JwtPayload, Tokens } from 'auth/auth.types';
-import { SocialProvider } from 'user/user.enums';
+import { SignInProvider } from 'user/user.enums';
 
 @Injectable()
 export class AuthService {
@@ -56,12 +56,12 @@ export class AuthService {
   }
 
   async signin(signInInDto: SignInInDto): Promise<Tokens> {
-    const { email, socialProvider, password } = signInInDto;
+    const { email, signInProvider, password } = signInInDto;
 
     const user = await this.userRepository.selectUnique({ email });
     if (!user) throw new NotFoundException();
 
-    if (SocialProvider.EMAIL !== socialProvider) {
+    if (SignInProvider.EMAIL !== signInProvider) {
       if (password) throw new BadRequestException('Password not needed');
       if (email !== user.email)
         throw new BadRequestException('Email not matched');

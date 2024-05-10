@@ -17,11 +17,11 @@ import { UserRepository } from 'user/repositories/user.repository';
 
 import { User } from 'user/entities/user.entity';
 
-import { CreateUserInDto } from 'user/dtos/req/create-user-in.dto';
-import { CreateUserOutDto } from 'user/dtos/res/create-user-out.dto';
-import { CreateCustomerInDto } from 'user/dtos/req/create-customer-in.dto';
-import { UserOutDto } from 'user/dtos/res/user.out';
-import { RoleEnum, SocialProvider } from 'user/user.enums';
+import { CreateUserInDto } from 'user/dto/req/create-user-in.dto';
+import { CreateUserOutDto } from 'user/dto/res/create-user-out.dto';
+import { CreateCustomerInDto } from 'user/dto/req/create-customer-in.dto';
+import { UserOutDto } from 'user/dto/res/user.out';
+import { RoleEnum, SignInProvider } from 'user/user.enums';
 
 @Injectable()
 export class UserService {
@@ -37,9 +37,9 @@ export class UserService {
   async create(createUserInDto: CreateUserInDto): Promise<CreateUserOutDto> {
     const createUserOutDto = new CreateUserOutDto();
 
-    const { email, socialProvider, role, password } = createUserInDto;
+    const { email, signInProvider, role, password } = createUserInDto;
 
-    if (SocialProvider.EMAIL === socialProvider) {
+    if (SignInProvider.EMAIL === signInProvider) {
       if (!password) throw new BadRequestException();
     } else {
       if (password) throw new BadRequestException();
@@ -51,9 +51,9 @@ export class UserService {
     const userEntity = new User();
     userEntity.email = email;
     userEntity.role = role;
-    userEntity.socialProvider = socialProvider;
+    userEntity.signInProvider = signInProvider;
 
-    if (SocialProvider.EMAIL === socialProvider) {
+    if (SignInProvider.EMAIL === signInProvider) {
       userEntity.password = await this.encryptUtil.encrypt(password);
     }
 
@@ -76,8 +76,8 @@ export class UserService {
     createUserOutDto.id = user.id;
     createUserOutDto.email = user.email;
     createUserOutDto.role = user.role;
-    createUserOutDto.socialProvider = user.socialProvider;
-    createUserOutDto.isDeleted = user.isDelete;
+    createUserOutDto.signInProvider = user.signInProvider;
+    createUserOutDto.isRemoved = user.isRemoved;
     createUserOutDto.updatedAt = user.updatedAt;
     createUserOutDto.createdAt = user.createdAt;
 
@@ -100,8 +100,8 @@ export class UserService {
     const userOutDto = new UserOutDto();
     userOutDto.id = user.id;
     userOutDto.role = user.role;
-    userOutDto.socialProvider = user.socialProvider;
-    userOutDto.isDeleted = user.isDelete;
+    userOutDto.signInProvider = user.signInProvider;
+    userOutDto.isRemoved = user.isRemoved;
     userOutDto.createdAt = user.createdAt;
     userOutDto.updatedAt = user.updatedAt;
 

@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { SocialProvider } from 'user/user.enums';
+import { SignInProvider } from 'user/user.enums';
 
 export class SignInInDto {
   @IsNotEmpty()
@@ -14,8 +14,8 @@ export class SignInInDto {
   email: string;
 
   @IsNotEmpty()
-  @IsEnum(SocialProvider)
-  socialProvider: string;
+  @IsEnum(SignInProvider)
+  signInProvider: string;
 
   @IsOptional()
   @IsString()
