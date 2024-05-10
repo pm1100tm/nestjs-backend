@@ -61,15 +61,11 @@ DB_USERNAME=
 DB_PASSWORD=
 DB_NAME=
 
-# It must be false if ENV is prod
-DB_SYNC=true
-
 # jwt
-JWT_SECRET=secret-dev-1234567890asdf
-JWT_REFRESH_SECRET=refresh-secret-dev-1234567890asdf
+JWT_SECRET=
+JWT_REFRESH_SECRET=
 JWT_EXPIRED_IN=3600
-JWT_EXPIRED_IN_FOR_REFRESH=3600
-
+JWT_EXPIRED_IN_FOR_REFRESH=3600 # It should be set more bigger value
 ```
 
 ---
@@ -78,3 +74,6 @@ JWT_EXPIRED_IN_FOR_REFRESH=3600
 
 - [TypeORM](https://typeorm.io/)
 - [TypeORM API Docs](https://orkhan.gitbook.io/typeorm/docs/repository-api)
+- [Typeorm naming strategies](https://www.npmjs.com/package/typeorm-naming-strategies)
+- [Typeorm Transactional](https://www.npmjs.com/package/typeorm-transactional)
+- [Typeorm Migration](https://whyhard.tistory.com/59)

@@ -17,5 +17,16 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "exclude": [
+    "**/*.spec.ts", // 테스트 파일 제외
+    "**/*.test.ts", // 테스트 파일 제외
+    "coverage", // 테스트 커버리지 보고서 제외
+    ".vscode", // VSCode 설정 파일 제외
+    ".idea", // IntelliJ IDEA 설정 파일 제외
+    ".git", // Git 관련 파일 제외
+    "temp", // 임시 파일 제외
+    "logs", // 로그 파일 제외
+    "*.exam.ts"
+  ]
 }
