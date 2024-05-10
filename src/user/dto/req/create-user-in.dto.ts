@@ -1,28 +1,28 @@
 import {
+  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  MaxLength,
-  MinLength,
+  Length,
 } from 'class-validator';
-import { RoleEnum, SocialProvider } from 'user/user.enums';
+import { RoleEnum, SignInProvider } from 'user/user.enums';
 
 export class CreateUserInDto {
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: 'email should be set' })
+  @Length(3, 64)
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
-  @IsEnum(SocialProvider)
-  socialProvider: SocialProvider;
+  @IsEnum(SignInProvider)
+  signInProvider: SignInProvider;
 
   @IsEnum(RoleEnum)
   role: RoleEnum;
 
   @IsOptional()
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
+  @Length(3, 16)
   password: string;
 }

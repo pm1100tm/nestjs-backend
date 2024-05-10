@@ -4,7 +4,7 @@ export enum RoleEnum {
   SELLER = 'se',
 }
 
-export enum SocialProvider {
+export enum SignInProvider {
   EMAIL = 'email',
   KAKAO = 'kakao',
   GOOGLE = 'google',

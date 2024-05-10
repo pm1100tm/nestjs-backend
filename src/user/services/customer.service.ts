@@ -4,8 +4,8 @@ import { CustomerRepository } from 'user/repositories/customer.repository';
 
 import { Customer } from 'user/entities/customer.entity';
 
-import { CreateCustomerInDto } from 'user/dtos/req/create-customer-in.dto';
-import { CreateCustomerOutDto } from 'user/dtos/res/create-customer.out.dto';
+import { CreateCustomerInDto } from 'user/dto/req/create-customer-in.dto';
+import { CreateCustomerOutDto } from 'user/dto/res/create-customer.out.dto';
 
 @Injectable()
 export class CustomerService {

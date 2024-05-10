@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
-import { SocialProvider } from 'user/user.enums';
+import { SignInProvider } from 'user/user.enums';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -7,8 +7,8 @@ export class UpdateUserDto {
   email: string;
 
   @IsOptional()
-  @IsEnum(SocialProvider)
-  socialProvider: SocialProvider.EMAIL;
+  @IsEnum(SignInProvider)
+  signInProvider: SignInProvider;
 
   @IsOptional()
   @IsString()

@@ -7,7 +7,6 @@ import {
   OneToOne,
 } from 'typeorm';
 
-import { RoleEnum, SocialProvider } from 'user/user.enums';
 import { Customer } from './customer.entity';
 
 @Entity('users')
@@ -21,17 +20,17 @@ export class User {
   @Column({ type: 'varchar', length: 128, default: '' })
   password: string;
 
-  @Column({ type: 'enum', enum: RoleEnum })
-  role: RoleEnum;
+  @Column({ type: 'varchar', length: 2, default: 'cu' })
+  role: string;
 
-  @Column({ type: 'enum', enum: SocialProvider })
-  socialProvider: SocialProvider;
+  @Column({ type: 'varchar', length: 8, default: 'email' })
+  signInProvider: string;
 
   @Column({ type: 'varchar', default: '' })
   refreshToken: string;
 
   @Column({ default: false })
-  isDelete: boolean;
+  isRemoved: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -41,4 +40,8 @@ export class User {
 
   @OneToOne(() => Customer, (customer) => customer.user)
   customer: Customer;
+
+  get idAndEmail(): string {
+    return this.id.toString() + '_' + this.email;
+  }
 }
