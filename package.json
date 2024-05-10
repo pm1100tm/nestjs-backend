@@ -18,7 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-esm"
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --dataSource ./data-source.ts",
+    "mig:local:cre": "cross-env NODE_ENV=local ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/migrations/Migration",
+    "mig:local:gen": "cross-env NODE_ENV=local npm run typeorm migration:generate ./src/migrations/Migration",
+    "mig:local:run": "cross-env NODE_ENV=local npm run typeorm migration:run",
+    "mig:local:rev": "cross-env NODE_ENV=local npm run typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
