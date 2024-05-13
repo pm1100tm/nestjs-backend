@@ -7,7 +7,7 @@ config({ path: `./src/configs/.env.${process.env.NODE_ENV}` });
 
 const configService = new ConfigService();
 
-export default new DataSource({
+export const datasource = new DataSource({
   type: 'postgres',
   host: configService.get('DB_HOST'),
   port: Number(configService.get<number>('DB_PORT')),

@@ -4,10 +4,10 @@ RUN apk update && apk add bash sudo vim
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
 RUN npm cache clean --force && rm -rf node_modules && npm install
 
-EXPOSE 3000
+COPY . .
 
-CMD ["npm", "run", "start"]
+EXPOSE 3000
