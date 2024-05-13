@@ -1,7 +1,8 @@
-/node_modules
-.git
 Dockerfile
 Dockerfile.*
+node_modules
+dist
+npm-debug.log
+.git
 .dockerignore
-.env
 docker-compose.yml
