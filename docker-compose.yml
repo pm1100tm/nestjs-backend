@@ -15,6 +15,8 @@ services:
       - POSTGRES_USER=swd
       - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=backend
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'swd']
 
   pgadmin:
     container_name: pgadmin
@@ -43,7 +45,8 @@ services:
     networks:
       - nestjs-backend
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 networks:
   nestjs-backend:
