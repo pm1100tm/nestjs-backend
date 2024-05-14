@@ -4,26 +4,24 @@
 
 - NestJS Backend Project with TypeScript
 
-## Installation
+## Start with docker compose
+
+```shell
+docker compose --build
+docker compose up -d
+```
+
+### In case that Docker is not installed
 
 ```bash
 npm install
-```
 
-## Running the app
-
-```bash
-# development
 npm run start
-
-# watch mode
 npm run start:dev
-
-# production mode
 npm run start:prod
 ```
 
-## Test
+### Run Test(TODO!)
 
 ```bash
 # unit tests
@@ -46,15 +44,13 @@ npm run test:cov
   - .env.prod
 
 ```plain
-# local or dev or prod
-ENV=local
+ENV=local # local or dev or prod
 
 # app
 HOST=
 PORT=
 
 # db
-DB_TYPE=postgres
 DB_HOST=
 DB_PORT=
 DB_USERNAME=
@@ -70,13 +66,10 @@ JWT_EXPIRED_IN_FOR_REFRESH=3600 # It should be set more bigger value
 
 ---
 
-### NestJS
+## Reference
 
 - [NestJS Docs](https://docs.nestjs.com/)
 - [wanago](https://wanago.io/)
-
-### TypeORM
-
 - [TypeORM](https://typeorm.io/)
 - [TypeORM API Docs](https://orkhan.gitbook.io/typeorm/docs/repository-api)
 - [Typeorm naming strategies](https://www.npmjs.com/package/typeorm-naming-strategies)
