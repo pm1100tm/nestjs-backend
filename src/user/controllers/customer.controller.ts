@@ -6,10 +6,13 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
 @UseInterceptors(TransformInterceptor)
 @Controller('customers')
+@ApiTags('customers')
 export class CustomerController {
   constructor() {}
 
