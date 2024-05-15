@@ -50,6 +50,9 @@ ENV=local # local or dev or prod
 HOST=
 PORT=
 
+# front-end url
+FRONTEND_URL=
+
 # db
 DB_HOST=
 DB_PORT=
