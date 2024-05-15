@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBody } from '@nestjs/swagger';
 
 import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
@@ -33,6 +33,9 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('/signin')
+  @ApiBody({
+    type: SignInInDto,
+  })
   async signin(
     @Body() signInInDto: SignInInDto,
     @Res({ passthrough: true }) res: Response,

@@ -11,7 +11,7 @@ import {
   ForbiddenException,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
@@ -34,6 +34,14 @@ export class UserController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
+  @ApiBody({
+    type: CreateUserInDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'A user has been successfully created',
+    type: CreateUserOutDto,
+  })
   create(@Body() createUserInDto: CreateUserInDto): Promise<CreateUserOutDto> {
     return this.userService.create(createUserInDto);
   }
@@ -41,6 +49,12 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'user id',
+    type: Number,
+  })
   findOne(
     @GetCurrentUser() currentUser: CurrentUser,
     @Param('id', ParseIntPipe) id: number,
