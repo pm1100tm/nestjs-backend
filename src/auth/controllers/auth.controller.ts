@@ -10,20 +10,24 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
-import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
+import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
 import { AuthService } from 'auth/services/auth.service';
 
-import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
+import { AccessTokenGuard } from 'auth/guards/accessToken.gurad';
 import { RefreshTokenGuard } from 'auth/guards/refreshToken.gurad';
+
+import { GetCurrentUser } from 'auth/decorators/get-current-user.decorator';
 
 import { SignInInDto } from 'auth/dtos/signin-in.dto';
 import { UserOutDto } from 'user/dto/res/user.out';
+
 import { CurrentUser, Tokens } from 'auth/auth.types';
-import { TransformInterceptor } from 'interceptors/transform.interceptor';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
