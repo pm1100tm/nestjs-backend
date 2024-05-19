@@ -1,0 +1,60 @@
+name: CI
+run-name: ${{ github.actor }} CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x, 20.x]
+
+    services:
+      docker:
+        image: docker:20.10.7
+        options: --privileged
+        ports:
+          - 3000:3000
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker
+        run: |
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+          sudo usermod -aG docker $USER
+
+      - name: Set up Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Build and run containers
+        run: |
+          docker-compose up --build -d
+
+      - name: Run lint
+        run: docker-compose exec app npm run lint
+
+      - name: Run tests
+        run: docker-compose exec app npm test
+
+      - name: Run coverage
+        run: docker-compose exec app npm run test:cov
+
+      - name: Build project
+        run: docker-compose exec app npm run build
+
+      - name: Wait for server to start
+        run: sleep 10
+
+      - name: Test server
+        run: curl -f http://localhost:8000 || exit 1
