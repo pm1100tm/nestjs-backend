@@ -1,0 +1,55 @@
+name: CI
+run-name: ${{ github.actor }} CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+  pull_request_target:
+    types: [pushed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build and run containers
+        run: |
+          docker-compose up --build -d
+
+      # - name: Cache dependencies
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-npm-
+
+      - name: Wait for server to start
+        run: sleep 3
+
+      # - name: Run lint
+      #   run: docker-compose exec -T app npm run lint
+
+      # - name: Run tests
+      #   run: docker-compose exec -T app npm test
+
+      # - name: Run coverage
+      #   run: docker-compose exec -T app npm run test:cov
+
+      # - name: Build project
+      #   run: docker-compose exec -T app npm run build
+
+      # - name: Test server
+      #   run: curl -f http://localhost:8000 || exit 1
