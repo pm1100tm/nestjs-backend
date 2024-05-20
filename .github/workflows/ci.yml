@@ -24,8 +24,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build and run containers
+      - name: Build and run docker containers
         run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t node-local:0.1 -f ./docker/Dockerfile.local .
+          TAG=pm1100tm/node-local:${GITHUB_SHA::7}
+          docker tag node-local:0.1 $TAG
+          docker push $TAG
           docker-compose up --build -d
 
       # - name: Cache dependencies
@@ -37,7 +42,7 @@ jobs:
       #       ${{ runner.os }}-npm-
 
       - name: Wait for server to start
-        run: sleep 3
+        run: sleep 1
 
       # - name: Run lint
       #   run: docker-compose exec -T app npm run lint
